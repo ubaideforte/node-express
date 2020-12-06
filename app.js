@@ -19,15 +19,12 @@ app.use("/user", userRoute);
 //-------------------------
 // Connecting to Data Base
 //-------------------------
-const Connection_String = process.env.DB_CONNECT || "";
+const Connection_String = process.env.DB_CONNECTION_STRING || "";
 mongoose
-  .connect(
-    "mongodb+srv://admin:SS5oOCSyC9Py5hz2@mini-cluster.mikwz.mongodb.net/nodejs?retryWrites=true&w=majority",
-    {
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-    }
-  )
+  .connect(Connection_String, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
   .then(() => console.log("Succcessfully connected to Data Base"))
   .catch((e) => console.log("Something wrong happen", e));
 
