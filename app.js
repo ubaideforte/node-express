@@ -15,6 +15,7 @@ app.use(cors());
 const userRoute = require("./routes/user/index");
 
 app.use("/user", userRoute);
+app.use("/", require("./routes/auth/index"));
 
 //-------------------------
 // Connecting to Data Base
