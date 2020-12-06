@@ -1,11 +1,14 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors");
 require("dotenv/config");
 
 //------------------------------------------------------------------------------------
 // use this to parse request from the user. Without this we get undefined in req.body
 app.use(express.json());
+
+app.use(cors());
 //------------------------------------------------------------------------------------
 
 // Importing Routes
