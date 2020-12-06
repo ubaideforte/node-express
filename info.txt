@@ -1,0 +1,3 @@
+mongodb name = nodejs
+user = admin
+password = SS5oOCSyC9Py5hz2
