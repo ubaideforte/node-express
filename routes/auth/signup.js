@@ -22,19 +22,25 @@ router.post("/", async (req, res) => {
       error: validationResult.error.details[0].message,
     });
   } else {
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = new User({
-        firstName,
-        lastName,
-        dateOfBirth,
-        password: hashedPassword,
-        email,
-      });
-      const response = await newUser.save();
-      res.status(201).json(response);
-    } catch {
-      res.status(500).send();
+    const isUserExist = await User.findOne({ email });
+
+    if (isUserExist) {
+      res.status(406).send({ message: "User already exist" });
+    } else {
+      try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({
+          firstName,
+          lastName,
+          dateOfBirth,
+          password: hashedPassword,
+          email,
+        });
+        const response = await newUser.save();
+        res.status(201).json(response);
+      } catch {
+        res.status(500).send();
+      }
     }
   }
 });
