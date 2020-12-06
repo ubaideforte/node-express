@@ -1,31 +1,29 @@
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
-const User = require("../modules/userModel");
+const User = require("../../modules/userModel");
 
-//---------------------------------
-// This API is usd to add new user
-//---------------------------------
+//---------------------------------*
+// This API is usd to add new user *
+//---------------------------------*
 router.post("/", (req, res) => {
   const { firstName, lastName, dateOfBirth, password } = req.body;
-  console.log(`firstName: ${firstName}, lastName: ${lastName} `);
 
-  //---------------------------------
-  // Validation
-  //---------------------------------
+  // <--------- Validation ---------> //
   const schema = Joi.object({
     firstName: Joi.string().min(3).required(),
     lastName: Joi.string().min(3).required(),
     password: Joi.string().min(8).required(),
   });
 
-  const valRes = schema.validate(req.body);
+  const validationResult = schema.validate(req.body);
 
-  if (valRes.error) {
+  if (validationResult.error) {
     res.status(400).send({
-      error: valRes.error.details[0].message,
+      error: validationResult.error.details[0].message,
     });
   } else {
+    // <----- Creating new user by using User Schema -----> //
     const newUser = new User({
       firstName,
       lastName,
@@ -33,6 +31,7 @@ router.post("/", (req, res) => {
       password,
     });
 
+    // <----- Saving new user to data base -----> //
     newUser
       .save()
       .then((data) => res.json(data))

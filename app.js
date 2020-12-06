@@ -9,7 +9,7 @@ app.use(express.json());
 //------------------------------------------------------------------------------------
 
 // Importing Routes
-const userRoute = require("./routes/user");
+const userRoute = require("./routes/user/index");
 
 app.use("/user", userRoute);
 
