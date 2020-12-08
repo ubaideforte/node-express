@@ -2,13 +2,15 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+const jwt = require("express-jwt");
+const jsonwebtoken = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 require("dotenv/config");
 
-//------------------------------------------------------------------------------------
-// use this to parse request from the user. Without this we get undefined in req.body
+//--------------------------- Middlewares --------------------------------------------
 app.use(express.json());
-
 app.use(cors());
+app.use(cookieParser());
 //------------------------------------------------------------------------------------
 
 // Importing Routes
