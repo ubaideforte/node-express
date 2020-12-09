@@ -3,6 +3,8 @@ const router = express.Router();
 const Joi = require("joi");
 const User = require("../../modules/userModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const userModel = require("../../modules/userModel");
 
 router.post("/", async (req, res) => {
   const { firstName, lastName, dateOfBirth, password, email } = req.body;
@@ -29,6 +31,7 @@ router.post("/", async (req, res) => {
     } else {
       try {
         const hashedPassword = await bcrypt.hash(password, 10);
+
         const newUser = new User({
           firstName,
           lastName,
@@ -36,6 +39,12 @@ router.post("/", async (req, res) => {
           password: hashedPassword,
           email,
         });
+
+        const token = jwt.sign(
+          { _id: newUser._id },
+          process.env.ACCESS_TOKEN_SECRET
+        );
+        newUser.jwtToken.token = token;
         const response = await newUser.save();
         res.status(201).json(response);
       } catch {

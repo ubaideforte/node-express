@@ -6,12 +6,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 router.post("/", async (req, res) => {
-  const { email, password } = req.body;
+  const { email } = req.body;
 
   // <--------- Validation ---------> //
   const schema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().min(8).required(),
   });
 
   const validationResult = schema.validate(req.body);
@@ -24,22 +23,14 @@ router.post("/", async (req, res) => {
     try {
       const user = await User.findOne({ email });
       if (user) {
-        if (await bcrypt.compare(password, user.password)) {
-          const token = jwt.sign(
-            { _id: user._id },
-            process.env.ACCESS_TOKEN_SECRET
-          );
-          user.jwtToken.token = token;
-          await user.save();
-          res.send(user);
-        } else {
-          res.status(406).json({ message: "Invalid email or password" });
-        }
+        user.jwtToken.token = "";
+        await user.save();
+        res.send(user);
       } else {
-        res.status(404).json({ message: "user not found" });
+        res.status(401).json({ message: "Can not logout" });
       }
-    } catch {
-      res.status(500).send();
+    } catch (err) {
+      res.status(500).send({ message: err.message });
     }
   }
 });

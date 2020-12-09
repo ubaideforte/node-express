@@ -22,6 +22,20 @@ const userSchema = mongoose.Schema({
     required: true,
     default: Date.now(),
   },
+  jwtToken: {
+    token: { type: String },
+    createdAt: { type: Date, default: new Date().toISOString() },
+  },
+  loggedDevices: [
+    {
+      deviceId: { type: String, required: true },
+      notificationToken: String,
+      jwtToken: {
+        token: { type: String },
+        createdAt: { type: Date },
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);

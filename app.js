@@ -13,10 +13,13 @@ app.use(cors());
 app.use(cookieParser());
 //------------------------------------------------------------------------------------
 
+// Importing Auth
+const verify = require("./routes/verify/index");
+
 // Importing Routes
 const userRoute = require("./routes/user/index");
 
-app.use("/user", userRoute);
+app.use("/user", verify, userRoute);
 app.use("/", require("./routes/auth/index"));
 
 //-------------------------
