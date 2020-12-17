@@ -36,6 +36,18 @@ const userSchema = mongoose.Schema({
       },
     },
   ],
+  resetKey: {
+    key: {
+      type: Number,
+    },
+    status: {
+      type: Boolean,
+      default: false,
+    },
+    createdAt: {
+      type: Date,
+    },
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

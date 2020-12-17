@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
 
   try {
     const verified = jwt.verify(authHeader, process.env.ACCESS_TOKEN_SECRET);
-
+    console.log("Verified", verified);
     req.user = verified;
   } catch (err) {
     res.status(400).json({ message: err.message });
